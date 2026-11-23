@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta http-equiv="Content-Security-Policy" content="object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mock Up Your Bag · Metropolitan Packaging</title>
+<meta name="description" content="Pick a bag, choose a size, upload your artwork and see it in 3D and on the shelf. A preview tool from Metropolitan Packaging, Brooklyn.">
+<meta property="og:title" content="Mock Up Your Bag · Metropolitan Packaging">
+<meta property="og:description" content="Upload your artwork and see it on any of our bags and pouches, in 3D and on the shelf.">
+<meta property="og:image" content="og.png">
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" href="favicon.png">
+<link rel="stylesheet" href="styles.css?v=11">
+<link rel="stylesheet" href="mock-clean.css?v=4">
+</head>
+<body class="studio-mockup">
+<header class="top">
+  <a class="brand" href="../index.html" aria-label="Bag Studio home"><img src="logo.png" alt="Metropolitan Packaging" width="1745" height="350"></a>
+  <span class="tool-name">Bag Studio</span>
+  <div class="top-actions"><button type="button" class="btn save-action" id="dlBtn">Download image</button><details class="quiet-menu"><summary aria-label="More options" title="More options">···</summary><div class="menu-content"><a href="../designer.html">Design a bag</a><a href="https://metropack.com/quote" id="quoteBtn">Request a quote</a><p>Download the mockup to attach to your quote.</p></div></details></div>
+</header>
+
+<main class="studio">
+  <section class="viewer" id="viewer" aria-label="3D bag preview">
+    <canvas id="c" aria-label="3D view of your bag. Drag to turn it."></canvas>
+    <div class="badge" id="badge">6 × 9 + 3.5″ stand-up pouch</div>
+    <div class="hint" id="hint">Drag to turn</div>
+    <button class="shelf-tab" type="button" id="shelfBtn">Shelf</button>
+    <button class="dimbtn" id="dimBtn" aria-pressed="false">Dimensions</button>
+    <div class="toolbar" id="views" role="group" aria-label="Views">
+      <button data-view="angle" class="on">3D</button>
+      <button data-view="front">Front</button>
+      <button data-view="back">Back</button>
+      <button data-view="side">Side</button>
+      <button data-view="bottom">Bottom</button>
+    </div>
+    <div class="shelfbar" id="shelfbar" hidden>
+      <span>Shelf</span>
+      <button id="shelfExit" class="ghost">3D view</button>
+    </div>
+    <div class="nogl" id="nogl" hidden>Your browser couldn't start the 3D view. Try Safari or Chrome.</div>
+  </section>
+
+  <aside class="panel" aria-label="Build your mockup">
+    <div class="intro"><h1>Mock up your bag.</h1><p>See your artwork in 3D.</p></div>
+
+    <div class="mock-art" aria-label="Artwork controls">
+      <label class="upload" for="file">
+        <input type="file" id="file" accept="image/png,image/jpeg,image/webp,image/svg+xml,.png,.jpg,.jpeg,.webp,.svg">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4m0 0-4.5 4.5M12 4l4.5 4.5M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span id="fileLabel">Upload front artwork <small>PNG, JPG, WebP or SVG</small></span>
+      </label>
+      <label class="upload back-upload" for="backFile"><input type="file" id="backFile" accept="image/png,image/jpeg,image/webp,image/svg+xml,.png,.jpg,.jpeg,.webp,.svg"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span id="backFileLabel">Upload back artwork <small>Optional</small></span></label>
+      <details class="mock-disclosure position"><summary>Artwork placement</summary><div class="fit" id="fit">
+        <div class="seg" role="group" aria-label="Fit">
+          <button data-fit="fit" class="on">Fit</button><button data-fit="fill">Fill panel</button><button data-fit="reset">Center</button>
+        </div>
+        <label class="range"><span>Size</span><input type="range" id="scale" min="20" max="200" value="100"><output id="scaleOut">100%</output></label>
+        <label class="range"><span>Left / right</span><input type="range" id="ox" min="-50" max="50" value="0"></label>
+        <label class="range"><span>Up / down</span><input type="range" id="oy" min="-50" max="50" value="0"></label>
+        <div class="row">
+          <span class="lbl">Back of bag</span>
+          <div class="seg" role="group" aria-label="Back of bag">
+            <button data-back="same" class="on">Same artwork</button><button data-back="plain">Plain</button>
+          </div>
+        </div>
+      </div></details>
+    </div>
+    <details class="mock-disclosure"><summary>Bag &amp; size</summary><div class="disclosure-in">
+      <div class="types" id="types" role="radiogroup" aria-label="Bag type">
+        <p class="tgroup" data-more="Swipe for more →">Pouches</p>
+        <div class="trow">
+        <button role="radio" aria-checked="true" data-type="pouch">
+          <svg viewBox="0 0 48 56" aria-hidden="true"><path d="M10 4h28v8H10z" fill="#ffd9b0"/><path d="M10 12h28c3 12 4 26 6 40H4c2-14 3-28 6-40z" fill="#F0810A"/><path d="M11 16h26" stroke="#fff" stroke-width="2"/><ellipse cx="24" cy="52" rx="20" ry="3" fill="#c96a05"/></svg>
+          <b>Stand-up pouch</b><small>with zipper</small></button>
+        <button role="radio" aria-checked="false" data-type="box">
+          <svg viewBox="0 0 48 56" aria-hidden="true"><path d="M10 6h28v6H10z" fill="#ffd9b0"/><path d="M10 12h28v40H10z" fill="#F0810A"/><path d="M10 12h5v40h-5z" fill="#c96a05"/><path d="M33 12h5v40h-5z" fill="#c96a05"/><path d="M11 17h26" stroke="#fff" stroke-width="2"/></svg>
+          <b>Flat bottom box pouch</b><small>5 panels, zipper</small></button>
+        <button role="radio" aria-checked="false" data-type="quad">
+          <svg viewBox="0 0 48 56" aria-hidden="true"><path d="M15 3h18v5H15z" fill="#ffd9b0"/><path d="M15 8h18v45H15z" fill="#F0810A"/><path d="M15 8h4v45h-4zM29 8h4v45h-4z" fill="#c96a05"/><path d="M14 8v45M34 8v45" stroke="#ffd9b0" stroke-width="1.5"/></svg>
+          <b>Quad seal pouch</b><small>4 corner seals</small></button>
+        <button role="radio" aria-checked="false" data-type="flat">
+          <svg viewBox="0 0 48 56" aria-hidden="true"><path d="M12 10h24v38H12z" fill="#F0810A"/><path d="M12 10h24v8H12z" fill="#ffd9b0"/><circle cx="24" cy="14" r="2" fill="#fff"/><path d="M12 20l3 1.5-3 1.5z" fill="#fff"/><path d="M14 18v28M34 18v28M12 46h24" stroke="#ffd9b0" stroke-width="1.5" stroke-dasharray="1.5 1.5"/></svg>
+          <b>Flat pouch</b><small>three-side seal</small></button>
+        </div>
+        <p class="tgroup" data-more="Swipe for more →">Bags</p>
+        <div class="trow">
+        <button role="radio" aria-checked="false" data-type="wicket">
+          <svg viewBox="0 0 48 56" aria-hidden="true"><path d="M8 2h32v10H8z" fill="#ffd9b0"/><circle cx="17" cy="7" r="2.4" fill="#fff"/><circle cx="31" cy="7" r="2.4" fill="#fff"/><path d="M8 12h32c2 14 2 28 2 40H6c0-12 0-26 2-40z" fill="#F0810A"/><path d="M8 13.5h32" stroke="#fff" stroke-dasharray="1.5 1.5"/></svg>
+          <b>Wicketed bag</b><small>flat, on a wicket</small></button>
+        <button role="radio" aria-checked="false" data-type="bread">
+          <svg viewBox="0 0 48 56" aria-hidden="true"><path d="M20 2c2 3 6 3 8 0l-2 8h-4z" fill="#ffd9b0"/><rect x="19" y="9" width="10" height="4" rx="1" fill="#2c6fb7"/><path d="M22 13h4c6 4 12 6 12 12v27H10V25c0-6 6-8 12-12z" fill="#F0810A"/></svg>
+          <b>Bread bag</b><small>bottom gusseted</small></button>
+        <button role="radio" aria-checked="false" data-type="diecut">
+          <svg viewBox="0 0 48 56" aria-hidden="true"><path d="M8 4h32v48H8z" fill="#F0810A"/><rect x="17" y="9" width="14" height="6" rx="3" fill="#fff"/><path d="M8 50h32" stroke="#c96a05" stroke-width="2"/></svg>
+          <b>Die-cut handle bag</b><small>flat, punched handle</small></button>
+        <button role="radio" aria-checked="false" data-type="doorknob">
+          <svg viewBox="0 0 48 56" aria-hidden="true"><path d="M10 4h28v18H10z" fill="#ffd9b0"/><circle cx="24" cy="12" r="5" fill="#fff"/><path d="M27.5 8.5l5-4.5" stroke="#fff" stroke-width="1.6"/><path d="M10 22h28v30H10z" fill="#F0810A"/></svg>
+          <b>Door knob hanger bag</b><small>hangs on a handle</small></button>
+        <button role="radio" aria-checked="false" data-type="header">
+          <svg viewBox="0 0 48 56" aria-hidden="true"><path d="M9 4h30v12H9z" fill="#fff" stroke="#c96a05" stroke-width="1.2"/><rect x="18" y="8.5" width="12" height="2.6" rx="1.3" fill="#c96a05"/><circle cx="24" cy="8" r="1.7" fill="#c96a05"/><path d="M10 16h28v36H10z" fill="#F0810A"/></svg>
+          <b>Header bag</b><small>card header, hang hole</small></button>
+        <button role="radio" aria-checked="false" data-type="tape">
+          <svg viewBox="0 0 48 56" aria-hidden="true"><path d="M9 4h30v14H9z" fill="#ffd9b0"/><path d="M11 9h26v4H11z" fill="#fff" stroke="#d9c3a6" stroke-width=".8"/><path d="M9 18h30v34H9z" fill="#F0810A"/></svg>
+          <b>Tape closure bag</b><small>resealable tape</small></button>
+        <button role="radio" aria-checked="false" data-type="fliptop">
+          <svg viewBox="0 0 48 56" aria-hidden="true"><path d="M9 8h30v44H9z" fill="#F0810A"/><path d="M9 8h30v12H9z" fill="#c96a05"/><path d="M9 20h30" stroke="#fff" stroke-width="1.4"/><path d="M9 8c0-3 30-3 30 0" fill="#c96a05"/></svg>
+          <b>Flip-top bag</b><small>fold-over flap</small></button>
+        <button role="radio" aria-checked="false" data-type="staple">
+          <svg viewBox="0 0 48 56" aria-hidden="true"><path d="M13 8h28v44H13z" fill="#c96a05"/><path d="M10 6h28v44H10z" fill="#ffd9b0"/><path d="M7 4h28v44H7z" fill="#F0810A"/><path d="M7 4h28v8H7z" fill="#c9b08a"/><path d="M12 8h5M25 8h5" stroke="#fff" stroke-width="1.6"/></svg>
+          <b>Staple pack bag</b><small>stapled pads</small></button>
+        <button role="radio" aria-checked="false" data-type="mailer">
+          <svg viewBox="0 0 48 56" aria-hidden="true"><path d="M6 12h36v38H6z" fill="#F0810A"/><path d="M6 12h36l-3 8H9z" fill="#c96a05"/><path d="M10 26h18M10 31h12" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></svg>
+          <b>Poly mailer</b><small>self-seal flap</small></button>
+        </div>
+        <p class="tgroup">Rollstock</p>
+        <div class="trow">
+        <button role="radio" aria-checked="false" data-type="roll">
+          <svg viewBox="0 0 48 56" aria-hidden="true"><path d="M4 44h30l10 6H14z" fill="#ffd9b0"/><circle cx="30" cy="26" r="15" fill="#F0810A"/><circle cx="30" cy="26" r="5" fill="#fff"/><circle cx="30" cy="26" r="3" fill="#c96a05"/><path d="M8 46h6M18 46h6" stroke="#F0810A" stroke-width="2"/></svg>
+          <b>Printed rollstock</b><small>film on a roll</small></button>
+        <button role="radio" aria-checked="false" data-type="rollzip">
+          <svg viewBox="0 0 48 56" aria-hidden="true"><path d="M4 44h30l10 6H14z" fill="#ffd9b0"/><circle cx="30" cy="26" r="15" fill="#F0810A"/><circle cx="30" cy="26" r="5" fill="#fff"/><circle cx="30" cy="26" r="3" fill="#c96a05"/><path d="M7 45h33" stroke="#fff" stroke-width="1.6"/><path d="M17 14.5c6-4 15-4 21 1" stroke="#fff" stroke-width="1.6" fill="none"/></svg>
+          <b>Pre-zippered rollstock</b><small>zipper on the film</small></button>
+        </div>
+      </div>
+      <p class="setting-label">Size <small id="sizeUnit">inches</small></p>
+      <div class="chips" id="sizes" role="radiogroup" aria-label="Common sizes"></div>
+      <div class="custom" id="custom">
+        <label><span id="lw">Width</span><input type="number" id="iw" inputmode="decimal" step="0.25" min="2" max="24"></label>
+        <label><span id="lh">Height</span><input type="number" id="ih" inputmode="decimal" step="0.25" min="3" max="36"></label>
+        <label><span id="lg">Gusset</span><input type="number" id="ig" inputmode="decimal" step="0.25" min="0" max="10"></label>
+      </div>
+      <p class="mm" id="mm"></p>
+    </div></details>
+    <details class="mock-disclosure"><summary>Film &amp; finish</summary><div class="disclosure-in">
+      <div class="row">
+        <span class="lbl">Film color <b class="filmname" id="filmName">Clear</b></span>
+        <div class="swatches" id="colors" role="radiogroup" aria-label="Film color">
+          <button class="clr" data-color="clear" aria-label="Clear (see-through)" title="Clear"></button>
+          <button style="--c:#ffffff" data-color="#ffffff" aria-label="White"></button>
+          <button style="--c:#f3eadb" data-color="#f3eadb" aria-label="Cream"></button>
+          <button style="--c:#c49a6c" data-color="#c49a6c" aria-label="Kraft"></button>
+          <button style="--c:#1d1d1f" data-color="#1d1d1f" aria-label="Black"></button>
+          <button style="--c:#F0810A" data-color="#F0810A" aria-label="Orange"></button>
+          <label class="pick" aria-label="Custom color"><input type="color" id="colorPick" value="#2a6e3f"></label>
+        </div>
+      </div>
+      <div class="row" id="koRow" hidden>
+        <span class="lbl">White in your artwork</span>
+        <div class="seg" role="group" aria-label="White background in artwork">
+          <button data-ko="clear" class="on">See-through</button><button data-ko="white">White ink</button>
+        </div>
+      </div>
+      <p class="filmnote" id="filmNote">Clear poly: your print is opaque, the rest of the film stays see-through.</p>
+      <div class="row" id="finishRow">
+        <span class="lbl">Finish</span>
+        <div class="seg" role="group" aria-label="Finish">
+          <button data-finish="gloss" class="on">Gloss</button><button data-finish="matte">Matte</button>
+        </div>
+      </div>
+    </div></details>
+    <p class="fine">Visual preview only. Artwork stays on your device.</p>
+  </aside>
+</main>
+
+
+<script type="module" src="app.js?v=15"></script>
+</body>
+</html>

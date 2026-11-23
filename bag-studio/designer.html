@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Design Your Bag · Metropolitan Packaging (Preview)</title>
+<meta name="description" content="Design a loaf bag or wicketed bag from scratch. Start with a style or add your own text and shapes. A preview from Metropolitan Packaging, Brooklyn.">
+<meta property="og:title" content="Design Your Bag · Metropolitan Packaging">
+<meta property="og:description" content="Pick your real size, place your logo on a dimensioned review dieline, see it in 3D and on the shelf.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;600;700&family=Montserrat:wght@800&family=Playfair+Display:wght@700&family=Pacifico&family=Bebas+Neue&family=Fredoka:wght@600&family=DM+Sans:wght@600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css?v=6"><link rel="stylesheet" href="editor-clean.css?v=4"><link rel="stylesheet" href="creative-studio.css?v=4">
+</head>
+<body class="studio-editor" data-release="live">
+<header class="top">
+  <a class="brand" href="index.html" aria-label="Bag Studio home"><img src="logo.png" alt="Metropolitan Packaging" width="1745" height="350"></a>
+  <span class="tool-name">Bag Studio</span>
+  <div class="top-actions">
+    <button type="button" class="btn dark proof-btn" id="dielineBtn">Download PDF</button>
+    <details class="quiet-menu"><summary aria-label="More options" title="More options">···</summary>
+      <div class="menu-content"><button type="button" id="dlBtn">Download PNG + layout</button><button type="button" id="quoteBtn">Request a quote</button><a href="mockup/index.html">Mock up artwork</a><p>PDF is a review proof.</p></div>
+    </details>
+  </div>
+</header>
+
+<main class="app">
+  <!-- the dieline -->
+  <section class="stagewrap" aria-label="Your bag's dieline">
+    <div class="stageview">
+      <div class="seg mode-tabs" role="group" aria-label="Preview mode"><button type="button" aria-pressed="true">Dieline</button><button type="button" id="see3d" aria-label="View in 3D">3D</button><button type="button" id="seeShelf" aria-label="View on the shelf">Shelf</button></div>
+      <div class="stage-tools"><button type="button" id="guidesToggle" aria-pressed="false">Guides</button><div class="undo">
+        <button id="zoomBtn" class="ic" aria-label="Zoom in on the print area" aria-pressed="false" hidden><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5M8.5 11h5M11 8.5v5"/></svg></button>
+        <button id="undoBtn" class="ic" aria-label="Undo" title="Undo" disabled><svg viewBox="0 0 24 24"><path d="M9 14 4 9l5-5"/><path d="M4 9h10a6 6 0 0 1 0 12h-3"/></svg></button>
+        <button id="redoBtn" class="ic" aria-label="Redo" title="Redo" disabled><svg viewBox="0 0 24 24"><path d="m15 14 5-5-5-5"/><path d="M20 9H10a6 6 0 0 0 0 12h3"/></svg></button>
+      </div></div>
+    </div>
+    <div class="stagebar">
+      <div class="seg" id="views" role="tablist" aria-label="What to show">
+        <button role="tab" data-view="whole" aria-selected="true">Full</button>
+        <button role="tab" data-view="front" aria-selected="false">Front</button>
+        <button role="tab" data-view="back" aria-selected="false">Back</button>
+      </div>
+
+    </div>
+    <div class="stage" id="stageBox">
+      <svg id="stage" role="img" aria-label="Your bag layout. Drag items to move them."></svg>
+      <div class="empty" id="empty">
+        <button type="button" class="btn sm line" data-jump-tab="art">Start designing <span aria-hidden="true">›</span></button>
+      </div>
+      <div class="selbar" id="selbar" hidden>
+        <button data-sel="smaller" aria-label="Smaller">−</button>
+        <button data-sel="bigger" aria-label="Bigger">+</button>
+        <button data-sel="rotate" aria-label="Turn 90°">⟳</button>
+        <button data-sel="flip" id="flipBtn">To back</button>
+        <button data-sel="edit">Edit</button>
+        <button data-sel="delete" class="del" aria-label="Delete">Delete</button>
+      </div>
+    </div>
+    <div class="legend" id="guideLegend" aria-label="Print guides" hidden>
+      <span><i class="lg-safe"></i>Print area</span>
+      <span><i class="lg-care"></i>Folds / gathers</span>
+      <span><i class="lg-no"></i>Seals / trim</span>
+    </div>
+    <div class="warns" id="warns" aria-live="polite"></div>
+  </section>
+
+  <!-- steps -->
+  <aside class="panel" aria-label="Design steps">
+    <div class="intro"><h1>Design your bag.</h1><p id="bagIntro">No artwork needed.</p></div>
+    <nav class="edit-tabs" id="editTabs" role="tablist" aria-label="Design controls">
+      <button role="tab" id="et-size" data-edit-tab="size" aria-selected="true" aria-controls="stepSize">Size</button>
+      <button role="tab" id="et-art" data-edit-tab="art" aria-selected="false" aria-controls="stepAdd" tabindex="-1">Design</button>
+      <button role="tab" id="et-labels" data-edit-tab="labels" aria-selected="false" aria-controls="stepCheck" tabindex="-1">Labels</button>
+    </nav>
+
+      <div class="props" id="props" hidden>
+        <div class="props-head"><b id="propsTitle">Selected</b><button class="link" id="deselect">Done</button></div>
+        <div id="propText" hidden>
+          <label class="full">Your words<textarea id="tText" rows="2" maxlength="200"></textarea></label>
+          <div class="fonts" id="fonts" role="radiogroup" aria-label="Font"></div>
+          <div class="spacing"><label>Letter spacing <output id="letterOut" for="letterSpace"></output><input id="letterSpace" type="range" min="-12" max="40" value="0"></label><label>Line spacing <output id="lineOut" for="lineSpace"></output><input id="lineSpace" type="range" min="80" max="210" value="118"></label></div>
+        </div>
+        <div id="propColor" hidden>
+          <span class="lbl">Color</span>
+          <div class="swatches" id="elColors"></div>
+        </div>
+        <div id="propLogo" hidden>
+          <label class="chk"><input type="checkbox" id="koWhite"> Remove white background</label>
+          <p class="note" id="logoInks"></p>
+        </div>
+        <div id="labelProps" hidden><button type="button" id="editLabel" class="btn sm line">Edit label details</button></div>
+        <label class="full">Size<input type="range" id="tSize" min="0" max="100" step="1"></label>
+        <label class="full">Turn<input type="range" id="tRot" min="-180" max="180" step="1"></label>
+        <div class="layer-actions" aria-label="Arrange selected layer"><button type="button" data-layer-action="duplicate">Duplicate</button><button type="button" data-layer-action="up">Forward</button><button type="button" data-layer-action="down">Backward</button></div>
+      </div>
+
+    <section class="step" id="stepSize" role="tabpanel" aria-labelledby="et-size">
+      <label class="bag-kind">Bag type<select id="bagKind"><option value="bread">Loaf bag</option><option value="wicket">Wicketed bag</option></select></label>
+      <h2>Bag size <small>inches</small></h2>
+      <div class="chips" id="sizes" role="radiogroup" aria-label="Common bag sizes"></div>
+      <div class="dims">
+        <label><span>Width</span><input type="number" id="iw" inputmode="decimal" step="0.25" min="4" max="14"></label>
+        <span class="x">×</span>
+        <label><span>Gusset</span><input type="number" id="ig" inputmode="decimal" step="0.25" min="2" max="8"></label>
+        <span class="x">×</span>
+        <label><span>Length</span><input type="number" id="il" inputmode="decimal" step="0.25" min="10" max="30"></label>
+      </div>
+      <p class="note" id="flatNote"></p>
+      <button class="btn line editor-next" data-jump-tab="art" type="button">Design your bag <span aria-hidden="true">›</span></button>
+    </section>
+
+    <section class="step" id="stepAdd" role="tabpanel" aria-labelledby="et-art" hidden>
+      <div class="starter-row"><button class="btn creator-start" type="button" id="chooseStarter">Start with a style <span aria-hidden="true">›</span></button><label id="paletteRow" class="bag-kind palette-row" hidden>Colors<select id="palettePick" aria-label="Design colors"></select></label></div>
+      <div class="adds">
+        <label class="bigbtn" for="file"><input type="file" id="file" accept="image/png,image/jpeg,image/svg+xml,.png,.jpg,.jpeg,.svg"><svg viewBox="0 0 24 24"><path d="M12 16V4m0 0-4.5 4.5M12 4l4.5 4.5M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg><b>Upload</b></label>
+        <button class="bigbtn" data-act="text"><svg viewBox="0 0 24 24"><path d="M5 6V4h14v2M12 4v16M9 20h6"/></svg><b>Text</b></button>
+        <button class="bigbtn" type="button" id="openMarks" aria-haspopup="dialog" aria-controls="shapeLibrary"><svg viewBox="0 0 24 24"><circle cx="8" cy="8" r="4"/><path d="m12 20 4-9 5 9Z"/></svg><b>Shapes</b></button>
+      </div>
+
+<details class="mini-disclosure" id="layerDrawer"><summary>Layers</summary><div class="layer-list" id="layers"></div></details>
+
+      <details class="mini-disclosure" id="stepColors"><summary>Film &amp; inks</summary><div class="disclosure-content">
+      <span class="lbl">Bag film</span>
+      <div class="seg wide" id="film" role="radiogroup" aria-label="Bag film">
+        <button role="radio" data-film="clear" aria-checked="true">Clear</button>
+        <button role="radio" data-film="white" aria-checked="false">White</button>
+      </div>
+      <span class="lbl">Background color</span>
+      <div class="swatches" id="bgColors"></div>
+      <div class="inks" id="inks"></div>
+      <label class="full ink-label" for="declared">Imported artwork inks <small>Optional · one ink per line</small></label>
+      <textarea id="declared" rows="2" maxlength="650" placeholder="e.g. Spot Orange #F0810A"></textarea>
+      <p class="note">The proof counts design colors and the inks you list. A file’s pixels don’t tell us the plate count.</p>
+      </div></details>
+      <button class="btn line editor-next" data-jump-tab="labels" type="button">Add labels <span aria-hidden="true">›</span></button>
+    </section>
+
+    <section class="step check" id="stepCheck" role="tabpanel" aria-labelledby="et-labels" hidden>
+      <p class="note">Add the labels your product needs.</p>
+      <ul class="checklist" id="checklist"></ul>
+      <button id="addBarcode" class="btn sm line" type="button">+ Add barcode</button>
+      <p class="disclaim">Review label content and scan a printed barcode before production. State rules vary.</p>
+    </section>
+
+    <footer class="foot"><span>Review proof only.</span> <a href="https://metropack.com/">metropack.com</a><a href="mailto:Sales@metropack.com" class="sr-only">Sales@metropack.com</a><a href="tel:18006420165" class="sr-only">1-800-642-0165</a></footer>
+  </aside>
+</main>
+
+<dialog class="starter-dialog" id="starterDialog" aria-labelledby="starterTitle">
+  <form id="starterForm" method="dialog">
+    <div class="qhead"><h2 id="starterTitle">Choose a style.</h2><button class="ic" type="button" id="starterClose" aria-label="Close styles">×</button></div>
+    <div class="starter-body">
+      <fieldset class="starter-options" id="starterOptions"><legend class="sr-only">Starting design</legend></fieldset>
+      <div class="starter-fields"><label>Bakery name<input name="brand" id="starterBrand" maxlength="45" value="Late Riser" required></label><label>Product name<input name="product" id="starterProduct" maxlength="55" value="The Everyday Loaf" required></label></div>
+      <p id="starterNotice" hidden>Replaces artwork on both sides. Keeps your food labels.</p>
+    </div>
+    <div class="starter-footer"><button type="submit" class="btn dark" id="applyStarter">Use style</button></div>
+  </form>
+</dialog>
+
+<!-- 3D / shelf -->
+<div class="viewer3d" id="viewer3d" hidden role="dialog" aria-modal="true" aria-label="Your bag in 3D">
+  <div class="v3bar">
+    <div class="seg" id="v3mode">
+      <button data-m="3d" aria-pressed="true">3D</button>
+      <button data-m="shelf" aria-pressed="false">Shelf</button>
+    </div>
+    <div class="seg" id="photoFaces" role="group" aria-label="View bag side" hidden><button type="button" data-photo-face="front">Front</button><button type="button" data-photo-face="back">Back</button></div><button class="btn sm line" id="v3close">Edit bag</button>
+  </div>
+  <div class="v3stage"><iframe id="mock" title="3D mockup of your bag"></iframe><div class="v3load" id="v3load">Building your bag in 3D…</div></div>
+  <div class="v3foot"><p id="v3info"></p><div class="v3actions"><button type="button" class="btn line" id="v3download">Save image</button><button class="btn primary" id="v3quote">Request a quote</button></div></div>
+</div>
+
+<dialog class="quote editor-dialog shape-library" id="shapeLibrary" aria-labelledby="shapeLibraryTitle">
+  <div class="qhead shape-header"><h2 id="shapeLibraryTitle" tabindex="-1" autofocus>Shapes &amp; marks</h2><button type="button" class="ic" id="shapeClose" aria-label="Close shape library">✕</button></div>
+  <div class="shape-search"><label for="shapeSearch" class="sr-only">Search shapes</label><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.65"><circle cx="10.5" cy="10.5" r="5.8"/><path d="m15 15 4.2 4.2"/></svg><input type="search" id="shapeSearch" placeholder="Search shapes" autocomplete="off" enterkeyhint="search"></div>
+  <div class="shape-scroll" id="shapeScroll"><div id="shapeSections"></div><p class="shape-empty" id="shapeEmpty" hidden>No shapes match that search.</p></div>
+  <span class="sr-only" id="shapeCount" aria-live="polite"></span>
+</dialog>
+
+<dialog class="quote editor-dialog" id="labelEditor" aria-labelledby="labelTitle">
+  <form id="labelForm" method="dialog" novalidate>
+    <div class="qhead"><h2 id="labelTitle">Edit label</h2><button type="button" class="ic" id="labelClose" aria-label="Close label editor">✕</button></div>
+    <div class="qbody" id="labelBody"></div>
+    <div class="qfoot"><p class="qerr" id="labelError" role="alert"></p><button type="submit" class="btn primary" id="labelSave">Apply to bag</button></div>
+  </form>
+</dialog>
+
+<!-- quote -->
+<dialog class="quote" id="quote" aria-labelledby="qTitle">
+  <form id="qForm" novalidate>
+    <div class="qhead"><h2 id="qTitle">Request a quote with this design</h2><button type="button" class="ic" id="qClose" aria-label="Close">✕</button></div>
+    <div class="qbody" id="qBody">
+      <div class="qsum" id="qSum"></div>
+      <div class="qatt" id="qAtt"></div>
+      <div class="grid">
+        <label class="full">Business name *<input name="businessName" required maxlength="200" autocomplete="organization"></label>
+        <label>Email *<input name="email" type="email" required maxlength="254" autocomplete="email"></label>
+        <label>Phone *<input name="phone" type="tel" required maxlength="40" autocomplete="tel"></label>
+        <label class="full">Location (city/state) *<input name="location" required maxlength="200" placeholder="Brooklyn, NY"></label>
+        <label>Quantity *<input name="quantity" required maxlength="20" placeholder="e.g. 25,000"><small>Minimum 25,000</small></label>
+        <label>Wicket or non-wicket *
+          <select name="wicket" required><option value="">Choose…</option><option>Wicket</option><option>Non-wicket</option><option>Not sure</option></select></label>
+        <label class="full">Anything else?<textarea name="notes" rows="2" maxlength="1000" placeholder="Thickness, timing, questions"></textarea></label>
+      </div>
+      <p class="qerr" id="qErr" role="alert"></p>
+    </div>
+    <div class="qfoot" id="qFoot">
+      <p class="pv">Preview: this button does not send anything yet.</p>
+      <button type="submit" class="btn primary">Send my quote request</button>
+    </div>
+  </form>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="creative-core.js?v=5"></script>
+<script src="metro-print.js?v=4"></script>
+<script src="studio-align.js?v=1"></script>
+<script src="designer.js?v=12"></script>
+<script src="editor-layout.js?v=4"></script>
+</body>
+</html>
